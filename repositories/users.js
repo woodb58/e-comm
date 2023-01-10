@@ -65,9 +65,6 @@ class UsersRepository {
         return record;
       }
 
-      if (found === false) {
-        throw new Error (`User not found`)
-      }
     }
 
   }
@@ -91,12 +88,4 @@ class UsersRepository {
   }
 }
 
-const test = async () => {
-  const repo = new UsersRepository("users.json");
-
-  let user = await repo.getOneBy({ p: 'password', e: 'test@test.c'})
-
-  console.log(user)
-};
-
-test();
+module.exports = new UsersRepository('users.json')
