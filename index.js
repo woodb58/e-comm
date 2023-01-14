@@ -1,17 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieSession = require("cookie-session")
+const cookieSession = require("cookie-session");
 const usersRepo = require("./repositories/users");
 const PORT = 3000;
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieSession({
-  keys: ['lpmkonjibhuvgycftxdrzseawq']
-}))
+app.use(
+  cookieSession({
+    keys: ["lpmkonjibhuvgycftxdrzseawq"],
+  })
+);
 
-app.get("/", (req, res) => {
+app.get("/signup", (req, res) => {
   res.send(`
     <div>
       Hello ${req.session.userId}
@@ -25,7 +27,7 @@ app.get("/", (req, res) => {
    `);
 });
 
-app.post("/", async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password, passwordConfirmation } = req.body;
 
   const existingUser = await usersRepo.getOneBy({ email });
@@ -42,6 +44,41 @@ app.post("/", async (req, res) => {
   req.session.userId = user.id;
 
   res.send("account created");
+});
+
+app.get("/signout", (req, res) => {
+  req.session = null;
+  res.send("Logged Out");
+});
+
+app.get("/signin", (req, res) => {
+  res.send(`
+  <div>
+    <form method="POST">
+        <input name="email" placeholder="email" />
+        <input name="password" placeholder="password" />
+        <button>Sign In</button>
+    </form>
+</div>
+  `);
+});
+
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await usersRepo.getOneBy({ email });
+
+  if (!user) {
+    return res.send("Email not found");
+  }
+
+  if (user.password !== password) {
+    return res.send("Invalid password");
+  }
+
+  req.session.userId = user.id;
+
+  res.send('You have successfully signed in')
 });
 
 app.listen(PORT, () => {
