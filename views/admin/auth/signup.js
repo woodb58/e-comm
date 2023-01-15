@@ -1,5 +1,8 @@
+const layout = require("../layout");
+
 module.exports = ({ req }) => {
-  return `
+  return layout({
+    content: `
     <div>
         Hello ${req.session.userId}
           <form method="POST">
@@ -8,6 +11,7 @@ module.exports = ({ req }) => {
               <input name="passwordConfirmation" placeholder="confirm password" />
               <button>Sign Up</button>
           </form>
-      </div>
-    `;
+      </div> 
+    `,
+  });
 };
