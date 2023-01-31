@@ -20,7 +20,7 @@ class UsersRepository {
   async getAll() {
     return JSON.parse(
       await fs.promises.readFile(this.filename, {
-        encoding: "utf8",
+        encoding: "utf8"
       })
     );
   }
@@ -44,6 +44,8 @@ class UsersRepository {
   }
 
   async comparePasswords(saved, supplied) {
+    // Saved -> password saved in our database. 'hashed.salt'
+    // Supplied -> password given to us by a user trying sign in
     const [hashed, salt] = saved.split(".");
     const hashedSuppliedBuf = await scrypt(supplied, salt, 64);
 
@@ -66,6 +68,24 @@ class UsersRepository {
     return records.find((record) => record.id === id);
   }
 
+  async delete(id) {
+    const records = await this.getAll();
+    const filteredRecords = records.filter((record) => record.id !== id);
+    await this.writeAll(filteredRecords);
+  }
+
+  async update(id, attrs) {
+    const records = await this.getAll();
+    const record = records.find((record) => record.id === id);
+
+    if (!record) {
+      throw new Error(`Record with ID ${id} not found`);
+    }
+
+    Object.assign(record, attrs);
+    await this.writeAll(records);
+  }
+
   async getOneBy(filters) {
     const records = await this.getAll();
 
@@ -82,24 +102,6 @@ class UsersRepository {
         return record;
       }
     }
-  }
-
-  async delete(id) {
-    const records = await this.getAll();
-    const filteredRecords = records.filter((record) => record.id !== id);
-    await this.writeAll(filteredRecords);
-  }
-
-  async update(id, attrs) {
-    const records = await this.getAll();
-    const record = records.find((record) => record.id === id);
-
-    if (!record) {
-      throw new Error(`Record with ID #${id} not found`);
-    }
-
-    Object.assign(record, attrs);
-    await this.writeAll(records);
   }
 }
 
