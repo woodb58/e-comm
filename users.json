@@ -13,5 +13,10 @@
     "email": "test3@test.com",
     "password": "895c5bc9e82d2b437960394f5497ed21debc0b25042a5fa780b201fade6b265a7c12ec0cba3a506b4c72d932a0f909749128b9a394785b1660f6b21b31ffd8b4.b7fdd98403c2dab3",
     "id": "cc9e21fa"
+  },
+  {
+    "email": "test4@test.com",
+    "password": "90815c2ba1d5ca55df16670b4ff775b2197cbd6184ae82f2a62aaa8bebd5483b96f9ffbddebec117349d803b9f6cea9f7688207a103dd1184b60190ea01caf6d.566f9750725ccdc4",
+    "id": "aeb2f989"
   }
 ]
