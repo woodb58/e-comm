@@ -1,13 +1,12 @@
 const express = require("express");
 const { validationResult } = require("express-validator");
 const multer = require("multer");
-const products = require("../../repositories/products");
+
 const productsRepo = require("../../repositories/products");
 const productsNewTemplate = require("../../views/admin/products/new");
 const { requireTitle, requirePrice } = require("./validators");
 
 const router = express.Router();
-
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/admin/products", (req, res) => {});
@@ -27,7 +26,7 @@ router.post(
       return res.send(productsNewTemplate({ errors }));
     }
 
-    const image = console.log(req.file.buffer.toString("base64"));
+    const image = req.file.buffer.toString("base64");
     const { title, price } = req.body;
     await productsRepo.create({ title, price, image });
 
