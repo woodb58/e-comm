@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "title": "test",
+    "price": "10",
+    "id": "813419f7"
+  },
+  {
+    "title": "test2",
+    "price": 10,
+    "id": "1eaa5bc4"
+  }
+]
